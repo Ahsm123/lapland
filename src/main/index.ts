@@ -8,6 +8,7 @@ import * as workflowRepository from './services/workflow-repository';
 import * as executionLogger from './services/execution-logger';
 import * as auditLogger from './services/audit-logger';
 import * as folderRepository from './services/folder-repository';
+import * as cliToolRepository from './services/cli-tool-repository';
 
 if (started) {
   app.quit();
@@ -46,6 +47,7 @@ app.on('ready', async () => {
     executionLogger.init(settings.dataDirectory);
     auditLogger.init(settings.dataDirectory);
     folderRepository.init(settings.dataDirectory);
+    cliToolRepository.init(settings.dataDirectory);
   }
 
   await createWindow();

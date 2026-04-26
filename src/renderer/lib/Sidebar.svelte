@@ -4,7 +4,7 @@
   const navItems = [
     { id: 'scripts', label: 'Scripts', enabled: true },
     { id: 'workflows', label: 'Workflows', enabled: true },
-    { id: 'cli-tools', label: 'CLI Tools', enabled: false },
+    { id: 'cli-tools', label: 'CLI Tools', enabled: true },
     { id: 'log', label: 'Log', enabled: true },
     { id: 'settings', label: 'Settings', enabled: false },
   ];

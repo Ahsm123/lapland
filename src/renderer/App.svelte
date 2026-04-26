@@ -2,6 +2,7 @@
   import Sidebar from './lib/Sidebar.svelte';
   import ScriptsPage from './pages/ScriptsPage.svelte';
   import WorkflowsPage from './pages/WorkflowsPage.svelte';
+  import CliToolsPage from './pages/CliToolsPage.svelte';
   import LogPage from './pages/LogPage.svelte';
 
   let ready = $state(false);
@@ -64,6 +65,8 @@
         <ScriptsPage />
       {:else if activePage === 'workflows'}
         <WorkflowsPage />
+      {:else if activePage === 'cli-tools'}
+        <CliToolsPage />
       {:else if activePage === 'log'}
         <LogPage />
       {/if}

@@ -301,23 +301,34 @@ Dependencies: 11
 
 ### Issue 17: CLI Tool Service + UI
 
-CLI tool model: `CliTool` — name, versionCommand, updateCommand
+CLI tool model: `CliTool` — `{id, name, versionCommand, updateCommand}`.
 
-Service:
-- Reads/writes `{dataDir}/config/cli-tools.json`
-- `checkVersion(tool)` — runs versionCommand via process runner
-- `update(tool)` — runs updateCommand via process runner
+Service (`cli-tool-repository.ts`):
+- One JSON file per tool in `{dataDir}/cli-tools/<id>.json`
+- `checkVersion(id, {force})` — runs versionCommand via process runner; result cached in a module-level `Map<id, ProcessResult>`. Cache survives page navigation, busted by `{force: true}`, by `update()`, and by `clearVersionCache()`.
+- `update(id)` — runs updateCommand via process runner with a 300s timeout (vs the default 30s); busts the version cache on completion.
+- `process-runner.run()` accepts an optional `timeoutMs` param (default 30s).
 
-UI:
-- List of tools with name, version output, "Update" button
-- "Add" dialog, "Remove" button, "Check again" button
-- Enable CLI Tools section in sidebar
+UI (`CliToolsPage.svelte` + `CliToolEditor.svelte`):
+- Same list/editor split as Scripts/Workflows (`LibraryList` left, editor right). No folders.
+- Editor shows name + 2 command fields + version output + Save/Check/Update buttons + collapsible update output.
+- Version auto-checks on first selection per session (cached afterwards).
+- Failed version check displays first stderr line in muted red, full stderr expandable below.
+- Update output appears under the buttons in a collapsible panel; on success the version is auto-rechecked.
+- "Re-check all" button in the top bar clears the cache and re-runs every tool's version command.
+- No add/remove confirmation.
+
+Logging:
+- Updates write to the execution log (script-shaped fields filled with the cli-tool's id/name/updateCommand).
+- Add/remove/edit write to the audit log under entityType `'cli-tool'`.
+- Version checks are not logged.
 
 Acceptance criteria:
-- Version commands run on page load
-- Update button runs update command
+- Version commands run on first selection per session and cache thereafter
+- Update button runs update command (5min timeout) and re-runs version check on success
 - Add/remove works
-- Failed commands show stderr
+- Failed version commands show first stderr line inline, full stderr below
+- "Re-check all" clears the cache and refreshes everything
 
 Dependencies: 6
 

@@ -6,6 +6,7 @@ import type {
   ExecutionLogEntry,
   Workflow,
   AuditLogEntry,
+  CliTool,
 } from '../shared/models';
 
 const api = {
@@ -64,6 +65,18 @@ const api = {
   audit: {
     getByDate: (date: string): Promise<AuditLogEntry[]> =>
       ipcRenderer.invoke('audit:getByDate', date),
+  },
+  cliTools: {
+    getAll: (): Promise<CliTool[]> => ipcRenderer.invoke('cliTools:getAll'),
+    save: (tool: CliTool): Promise<CliTool> =>
+      ipcRenderer.invoke('cliTools:save', tool),
+    remove: (id: string): Promise<void> =>
+      ipcRenderer.invoke('cliTools:remove', id),
+    checkVersion: (id: string, force = false): Promise<ProcessResult | null> =>
+      ipcRenderer.invoke('cliTools:checkVersion', id, force),
+    update: (id: string): Promise<ProcessResult | null> =>
+      ipcRenderer.invoke('cliTools:update', id),
+    clearCache: (): Promise<void> => ipcRenderer.invoke('cliTools:clearCache'),
   },
 };
 

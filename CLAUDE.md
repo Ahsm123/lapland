@@ -45,7 +45,7 @@ Key patterns:
 Data:
 
 - Scripts and workflows are stored as individual JSON files in `{dataDirectory}/scripts/` and `{dataDirectory}/workflows/`.
-- CLI tools are stored in `{dataDirectory}/config/cli-tools.json`.
+- CLI tools are stored as individual JSON files in `{dataDirectory}/cli-tools/`.
 - Execution logs are append-only JSONL, one file per day in `{dataDirectory}/logs/`.
 - App settings live in `{appData}/Lapland/settings.json`, user picks `dataDirectory` on first launch.
 

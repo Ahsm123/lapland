@@ -1,15 +1,18 @@
 import { spawn } from 'node:child_process';
 import type { ProcessResult } from '../../shared/models';
 
-const TIMEOUT_MS = 30_000;
+const DEFAULT_TIMEOUT_MS = 30_000;
 
-export async function run(script: string): Promise<ProcessResult> {
+export async function run(
+  script: string,
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
+): Promise<ProcessResult> {
   const start = performance.now();
 
   return new Promise((resolve) => {
     const child = spawn('/bin/zsh', ['-c', script], {
       stdio: ['ignore', 'pipe', 'pipe'],
-      timeout: TIMEOUT_MS,
+      timeout: timeoutMs,
     });
 
     let stdout = '';
@@ -29,7 +32,7 @@ export async function run(script: string): Promise<ProcessResult> {
         exitCode: code ?? 1,
         stdout,
         stderr: signal === 'SIGTERM'
-          ? stderr + '\n[Process timed out after ' + TIMEOUT_MS / 1000 + 's]'
+          ? stderr + '\n[Process timed out after ' + timeoutMs / 1000 + 's]'
           : stderr,
         durationMs,
       });

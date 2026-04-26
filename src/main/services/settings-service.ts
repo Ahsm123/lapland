@@ -27,4 +27,5 @@ export async function ensureDataDirectoryExists(
   await fs.mkdir(path.join(dataDirectory, 'workflows'), { recursive: true });
   await fs.mkdir(path.join(dataDirectory, 'logs'), { recursive: true });
   await fs.mkdir(path.join(dataDirectory, 'config'), { recursive: true });
+  await fs.mkdir(path.join(dataDirectory, 'cli-tools'), { recursive: true });
 }
