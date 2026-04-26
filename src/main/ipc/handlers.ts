@@ -1,4 +1,5 @@
-import { ipcMain, dialog, BrowserWindow } from 'electron';
+import { ipcMain, dialog, BrowserWindow, app, shell } from 'electron';
+import path from 'node:path';
 import * as settingsService from '../services/settings-service';
 import * as scriptRepository from '../services/script-repository';
 import * as workflowRepository from '../services/workflow-repository';
@@ -33,6 +34,23 @@ export function registerIpcHandlers(): void {
   ipcMain.handle('settings:ensureDataDirectory', (_, dataDirectory: string) =>
     settingsService.ensureDataDirectoryExists(dataDirectory),
   );
+
+  ipcMain.handle('app:getInfo', () => ({
+    appVersion: app.getVersion(),
+    electronVersion: process.versions.electron,
+    nodeVersion: process.versions.node,
+    chromeVersion: process.versions.chrome,
+    platform: process.platform,
+    arch: process.arch,
+    settingsPath: path.join(app.getPath('appData'), 'Lapland', 'settings.json'),
+  }));
+
+  ipcMain.handle('shell:revealPath', async (_, target: string) => {
+    shell.showItemInFolder(target);
+  });
+  ipcMain.handle('shell:openPath', async (_, target: string) => {
+    return shell.openPath(target);
+  });
 
   ipcMain.handle('scripts:getAll', () => scriptRepository.getAll());
   ipcMain.handle('scripts:getById', (_, id: string) =>

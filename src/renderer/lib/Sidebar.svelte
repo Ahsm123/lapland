@@ -6,7 +6,7 @@
     { id: 'workflows', label: 'Workflows', enabled: true },
     { id: 'cli-tools', label: 'CLI Tools', enabled: true },
     { id: 'log', label: 'Log', enabled: true },
-    { id: 'settings', label: 'Settings', enabled: false },
+    { id: 'settings', label: 'Settings', enabled: true },
   ];
 </script>
 

@@ -66,6 +66,23 @@ const api = {
     getByDate: (date: string): Promise<AuditLogEntry[]> =>
       ipcRenderer.invoke('audit:getByDate', date),
   },
+  app: {
+    getInfo: (): Promise<{
+      appVersion: string;
+      electronVersion: string;
+      nodeVersion: string;
+      chromeVersion: string;
+      platform: string;
+      arch: string;
+      settingsPath: string;
+    }> => ipcRenderer.invoke('app:getInfo'),
+  },
+  shell: {
+    revealPath: (target: string): Promise<void> =>
+      ipcRenderer.invoke('shell:revealPath', target),
+    openPath: (target: string): Promise<string> =>
+      ipcRenderer.invoke('shell:openPath', target),
+  },
   cliTools: {
     getAll: (): Promise<CliTool[]> => ipcRenderer.invoke('cliTools:getAll'),
     save: (tool: CliTool): Promise<CliTool> =>

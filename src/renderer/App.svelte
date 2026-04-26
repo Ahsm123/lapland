@@ -4,6 +4,7 @@
   import WorkflowsPage from './pages/WorkflowsPage.svelte';
   import CliToolsPage from './pages/CliToolsPage.svelte';
   import LogPage from './pages/LogPage.svelte';
+  import SettingsPage from './pages/SettingsPage.svelte';
 
   let ready = $state(false);
   let needsSetup = $state(false);
@@ -69,6 +70,8 @@
         <CliToolsPage />
       {:else if activePage === 'log'}
         <LogPage />
+      {:else if activePage === 'settings'}
+        <SettingsPage />
       {/if}
     </main>
   </div>
